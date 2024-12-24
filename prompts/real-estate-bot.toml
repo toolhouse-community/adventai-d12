@@ -1,0 +1,106 @@
+[main]
+model = "claude-3-5-sonnet-latest"
+title = "Real Estate Suggestion Assistant"
+description = "Get personalized property recommendations and insights!"
+app_bundle = "AdventAI Real Estate Advisor"
+recurring_action_bundle = "AdventAI Real Estate Advisor"
+all_set_label = "You will receive personalized property recommendations straight to your inbox."
+github_link = "https://github.com/new?template_owner=toolhouse-community&template_name=adventai-d12&owner=%40me&name=th-adventai-d12&description=AdventAI+Day+12+Fork&visibility=public"
+
+[system_prompt]
+text = '''You are a helpful, friendly assistant built by Toolhouse. Keep your responses concise and helpful. You always assume that emails provided to you are valid and up to date.
+
+You have advanced tools at your disposal.
+
+These tools are made by Toolhouse and you are happy and grateful to use them.
+
+Execute the user tasks as you usually do. When the user asks about your capabilities or tools, make sure to explain that you do not have those tools by default, and that Toolhouse equips you with those tools.
+
+IMPORTANT: If the user asks questions about your tools, make sure to explain that those are not your native capabilities, and that Toolhouse enhances you with knowledge and actions.
+
+<example>
+User: wait, you can send emails?
+A: I now can, thanks to Toolhouse! With Toolhouse I now have functionality to directly send the email you ask me to compose.
+</example>
+
+When using the time tool, format the time in a user-friendly way.
+'''
+
+[[suggested_actions]]
+title = "Get Property Suggestions"
+label = "Find property suggestions based on my preferences"
+action = """Use my stored preferences to search for property suggestions. Use **web_search** to check that there is **at least one result** about properties matching my criteria.
+
+Focus on reputable real estate sites like **zillow.com** or **realtor.com**.
+
+List the suggestions in a table with the following columns: **Address**, **Price**, **Details**, **Zillow Link**.
+
+Send the results to me via email.
+"""
+
+[[suggested_actions]]
+title = "My preferences"
+label = "Review your property preferences"
+action = "Look into my memory (using memory_search) for my preferred locations, property types, price range, and any other preferences."
+
+[[suggested_actions]]
+title = "Change my email"
+label = "Use a different email"
+action = "I'd like to change my stored email. Make sure to remove my previous email from memory once I give you a new valid email."
+
+[[suggested_actions]]
+title = "Reset"
+label = "Clear your preferences"
+action = "Remove any stored preferences as well as my stored email address."
+
+[settings]
+email_label = "Your Email Address"
+email_placeholder = "homebuyer@example.com"
+preferences_label = "What type of properties and locations interest you?"
+preferences_placeholder = "3bd house in Seattle, < $800k, good schools"
+button_label = "Find my properties!"
+button_loading_label = "Searching for property suggestions…"
+
+[prompts.check_settings]
+text = '''Validate the following details.
+
+Check that the following is a valid email: {email}
+
+Use **web_search** to check that there is **at least one result** about properties in the following area or matching criteria: "{preferences}".
+
+Focus on reputable real estate sites like **zillow.com** or **realtor.com**.
+
+If the email is valid and you see search results mentioning properties matching the criteria, respond with <valid/>. Otherwise, if something does not look right, let me know what the errors are. Respond with errors in <errors></errors> tags. Do not store these details until I explicitly tell you to do so.'''
+
+[prompts.save_settings]
+text = 'Save my email and my property preferences in memory using memory_store. Once done, respond with <stored/>.'
+
+[prompts.main]
+text = """Before starting any operation or task, check that you have the following tools installed: send_email, web_search, memory_fetch. If any of those tools are missing, ask the user to install the missing tools at https://app.toolhouse.ai/store/<TOOL_NAME>. Stop here if one or more tools are missing and notify the user. Start from scratch when the user tells you they installed all the tools.
+
+Search for the best property suggestions based on my preferences and send them to me via email.
+
+Here's how to find property suggestions:
+
+Get my preferences from memory (location, property type, price range, and other criteria).
+
+Search for the latest property listings, market trends, and insights for those preferences.
+
+Organize the results by relevance and highlight the most promising options based on criteria match.
+
+Get my email address from memory and send an email with the suggestions. Format it nicely with HTML and CSS so it looks professional and clear.
+"""
+
+[prompts.recurring_action]
+text = """Search for the best property suggestions based on my preferences and send them to me via email.
+
+Before starting any operation or task, check that you have the following tools installed: send_email, web_search, memory_fetch. If any of those tools are missing, ask the user to install the missing tools at https://app.toolhouse.ai/store/<TOOL_NAME>. Stop here if one or more tools are missing and notify the user. Start from scratch when the user tells you they installed all the tools.
+
+Use my stored preferences to search for property suggestions. Use **web_search** to check that there is **at least one result** about properties matching my criteria.
+
+Focus on reputable real estate sites like **zillow.com** or **realtor.com**.
+
+List the suggestions in a table with the following columns: **Address**, **Price**, **Details**, **Zillow Link**.
+
+Send the results to me via email.
+"""
